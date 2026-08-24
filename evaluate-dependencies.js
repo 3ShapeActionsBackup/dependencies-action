@@ -95,7 +95,8 @@ async function evaluate() {
                 core.info(`  Fetching '${JSON.stringify(d)}'`);
                 response = await octokit.issues.get(d).catch(error => core.error(error));
                 if (response === undefined) {
-                    core.info('    Could not locate this dependency.  Will need to verify manually.');
+                    core.info('    Could not locate this dependency.  Treating as unresolved.');
+                    dependencyIssues.push({ number: d.issue_number, title: `Unknown (in ${d.owner}/${d.repo} - could not be located)` });
                     continue;
                 }
             }
